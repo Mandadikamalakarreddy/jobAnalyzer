@@ -24,7 +24,7 @@ const resume = () => {
   const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
-  const [feedback, setFeedback] = useState("");
+  const [feedback, setFeedback] = useState<Feedback | null>(null);
 
   useEffect(() => {
     if (!isLoading && !auth.isAuthenticated) navigate(`/auth/?next=/resume/${id}`);
@@ -50,7 +50,7 @@ const resume = () => {
       if (!imageBlob) return;
       const imageUrl = URL.createObjectURL(imageBlob);
       setImageUrl(imageUrl);
-      setFeedback(data.feedback);
+      setFeedback(typeof data.feedback === 'string' ? JSON.parse(data.feedback) : data.feedback);
 
       console.log({ imageUrl, resumeUrl, feedback: data.feedback });
     };
@@ -82,12 +82,12 @@ const resume = () => {
             </div>
           )}
         </section>
-        <section className="feedback-section">
+        <section className="feedback-section mb-28">
           <h2 className="!text-black text-4xl font-semibold">Resume Review</h2>
           {feedback ? (
             <div className="flex flex-col gap-8 animation-in fade-in duration-1000 gra">
             <Summary feedback={feedback}/>
-            <ATS feedback={feedback.ATS.score || 0} suggestions={feedback.ATS.tips} />
+            <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []} />
             <Details feedback={feedback}/>
             </div>
           ) : (
