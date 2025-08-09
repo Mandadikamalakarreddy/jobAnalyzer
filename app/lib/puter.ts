@@ -321,10 +321,16 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       setError("Puter.js not available");
       return;
     }
-    // return puter.ai.chat(prompt, imageURL, testMode, options);
-    return puter.ai.chat(prompt, imageURL, testMode, options) as Promise<
-      AIResponse | undefined
-    >;
+    
+    try {
+      return puter.ai.chat(prompt, imageURL, testMode, options) as Promise<
+        AIResponse | undefined
+      >;
+    } catch (error) {
+      console.error("AI chat error:", error);
+      setError(`AI service error: ${error instanceof Error ? error.message : "Unknown error"}`);
+      return undefined;
+    }
   };
 
   const feedback = async (path: string, message: string) => {
@@ -334,24 +340,47 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       return;
     }
 
-    return puter.ai.chat(
-      [
-        {
-          role: "user",
-          content: [
-            {
-              type: "file",
-              puter_path: path,
-            },
-            {
-              type: "text",
-              text: message,
-            },
-          ],
-        },
-      ],
-      { model: "claude-sonnet-4" }
-    ) as Promise<AIResponse | undefined>;
+    // Try with default model first, then fallback to basic model
+    try {
+      return puter.ai.chat(
+        [
+          {
+            role: "user",
+            content: [
+              {
+                type: "file",
+                puter_path: path,
+              },
+              {
+                type: "text",
+                text: message,
+              },
+            ],
+          },
+        ],
+        { model: "claude-3-5-sonnet-20241022" }
+      ) as Promise<AIResponse | undefined>;
+    } catch (error) {
+      console.warn("Primary model failed, trying fallback:", error);
+      // Fallback to default model without specifying
+      return puter.ai.chat(
+        [
+          {
+            role: "user",
+            content: [
+              {
+                type: "file",
+                puter_path: path,
+              },
+              {
+                type: "text",
+                text: message,
+              },
+            ],
+          },
+        ]
+      ) as Promise<AIResponse | undefined>;
+    }
   };
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {

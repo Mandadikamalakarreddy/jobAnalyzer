@@ -30,8 +30,14 @@ export default function Home() {
       const parsedResumes = resumes?.map(
         (resume) => JSON.parse(resume.value) as Resume
       );
-      console.log(parsedResumes);
-      setResumes(parsedResumes || []);
+      
+      // Remove duplicates based on resume ID
+      const uniqueResumes = parsedResumes?.filter((resume, index, self) => 
+        index === self.findIndex(r => r.id === resume.id)
+      );
+      
+      // console.log(uniqueResumes);
+      setResumes(uniqueResumes || []);
       setLoadingResumes(false);
     };
 

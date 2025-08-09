@@ -10,12 +10,24 @@ export const meta = () => [
 const auth = () => {
   const { isLoading, auth } = usePuterStore();
   const location = useLocation();
-  const next = location.search.split('next=')[1]
+  const urlParams = new URLSearchParams(location.search);
+  const next = urlParams.get('next') || '/';
   const navigate = useNavigate();
 
   useEffect(()=>{
-       if(auth.isAuthenticated) navigate(next)
-  },[auth.isAuthenticated, next])
+       if(auth.isAuthenticated) {
+         navigate(next, { replace: true });
+       }
+  },[auth.isAuthenticated, next, navigate])
+
+  useEffect(() => {
+    auth.checkAuthStatus();
+  }, [auth.checkAuthStatus]);
+
+  const handleSignIn = async () => {
+    await auth.signIn();
+
+  };
 
   return (
     <main className="bg-[url('/images/bg-main.svg')] bg-cover  min-h-screen flex items-center justify-center">
@@ -38,7 +50,7 @@ const auth = () => {
                             <p> Log Out</p>
                              </button>
                     ):(
-                        <button className="auth-button" onClick={auth.signIn}> 
+                        <button className="auth-button" onClick={handleSignIn}> 
                                                     <p> Log In</p>
 
                         </button>

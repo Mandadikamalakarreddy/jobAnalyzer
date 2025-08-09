@@ -29,7 +29,7 @@ export async function convertPdfToImage(
   file: File
 ): Promise<PdfConversionResult> {
   try {
-    console.log("Starting PDF conversion for file:", file.name, "Size:", file.size);
+    // console.log("Starting PDF conversion for file:", file.name, "Size:", file.size);
     
     // Validate file type
     if (!file.type.includes('pdf') && !file.name.toLowerCase().endsWith('.pdf')) {
@@ -37,16 +37,16 @@ export async function convertPdfToImage(
     }
 
     const lib = await loadPdfJs();
-    console.log("PDF.js library loaded successfully");
+    // console.log("PDF.js library loaded successfully");
 
     const arrayBuffer = await file.arrayBuffer();
-    console.log("File converted to ArrayBuffer, size:", arrayBuffer.byteLength);
+    // console.log("File converted to ArrayBuffer, size:", arrayBuffer.byteLength);
     
     const pdf = await lib.getDocument({ data: arrayBuffer }).promise;
-    console.log("PDF document loaded, pages:", pdf.numPages);
+    // console.log("PDF document loaded, pages:", pdf.numPages);
     
     const page = await pdf.getPage(1);
-    console.log("First page loaded successfully");
+    // console.log("First page loaded successfully");
 
     const viewport = page.getViewport({ scale: 4 });
     const canvas = document.createElement("canvas");
@@ -62,15 +62,15 @@ export async function convertPdfToImage(
     context.imageSmoothingEnabled = true;
     context.imageSmoothingQuality = "high";
 
-    console.log("Starting page render, canvas size:", canvas.width, "x", canvas.height);
+    // console.log("Starting page render, canvas size:", canvas.width, "x", canvas.height);
     await page.render({ canvasContext: context, viewport }).promise;
-    console.log("Page rendered successfully");
+    // console.log("Page rendered successfully");
 
     return new Promise((resolve) => {
       canvas.toBlob(
         (blob) => {
           if (blob) {
-            console.log("Image blob created successfully, size:", blob.size);
+            // console.log("Image blob created successfully, size:", blob.size);
             // Create a File from the blob with the same name as the pdf
             const originalName = file.name.replace(/\.pdf$/i, "");
             const imageFile = new File([blob], `${originalName}.png`, {

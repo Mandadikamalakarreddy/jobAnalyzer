@@ -52,7 +52,7 @@ const resume = () => {
       setImageUrl(imageUrl);
       setFeedback(typeof data.feedback === 'string' ? JSON.parse(data.feedback) : data.feedback);
 
-      console.log({ imageUrl, resumeUrl, feedback: data.feedback });
+      // console.log({ imageUrl, resumeUrl, feedback: data.feedback });
     };
 
     loadResume();
