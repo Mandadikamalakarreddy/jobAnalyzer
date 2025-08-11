@@ -2,12 +2,15 @@
   "name": "resumeanalyser",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "postinstall": "copy node_modules\\pdfjs-dist\\build\\pdf.worker.min.mjs public\\pdf.worker.min.mjs"
+    "postinstall": "cp node_modules/pdfjs-dist/build/pdf.worker.min.mjs public/pdf.worker.min.mjs"
   },
   "dependencies": {
     "@react-router/node": "^7.7.1",
