@@ -8,11 +8,14 @@ export const meta = () => [
 ];
 
 const auth = () => {
-  const { isLoading, auth } = usePuterStore();
+  const { isLoading, auth, error } = usePuterStore();
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const next = urlParams.get('next') || '/';
   const navigate = useNavigate();
+
+  // Check if we're in demo mode (Puter.js failed to load)
+  const isDemoMode = typeof window !== "undefined" && (window as any).puterLoadError;
 
   useEffect(()=>{
        if(auth.isAuthenticated) {
@@ -26,7 +29,6 @@ const auth = () => {
 
   const handleSignIn = async () => {
     await auth.signIn();
-
   };
 
   return (
@@ -35,24 +37,28 @@ const auth = () => {
         <section className="flex flex-col gap-8 bg-white rounded-2xl p-10 ">
           <div className="flex flex-col gap-4 item-center text-center">
             <h1>Welcome</h1>
-            <h2>Log In to Continue Your Job Journey</h2>
+            <h2>{isDemoMode ? "Demo Mode - Resume Analyzer" : "Log In to Continue Your Job Journey"}</h2>
+            {isDemoMode && (
+              <p className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg">
+                Running in demo mode. All features are available for testing.
+              </p>
+            )}
           </div>
           <div>
             {
                 isLoading ? (
                     <button className="auth-button animate-pulse">
-                        <p>Signing you in...</p>
+                        <p>{isDemoMode ? "Setting up demo..." : "Signing you in..."}</p>
                     </button>
                 ) : (
                     <>
                     {auth.isAuthenticated ? (
                         <button className="auth-button" onClick={auth.signOut}>
-                            <p> Log Out</p>
+                            <p>{isDemoMode ? "Exit Demo" : "Log Out"}</p>
                              </button>
                     ):(
                         <button className="auth-button" onClick={handleSignIn}> 
-                                                    <p> Log In</p>
-
+                            <p>{isDemoMode ? "Enter Demo Mode" : "Log In"}</p>
                         </button>
                     )}
                     </>

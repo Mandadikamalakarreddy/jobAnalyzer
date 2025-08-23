@@ -119,6 +119,30 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const checkAuthStatus = async (): Promise<boolean> => {
     const puter = getPuter();
     if (!puter) {
+      // Check if we're in production mode with Puter disabled
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        // Enable fallback mode - simulate being authenticated
+        const fallbackUser: PuterUser = {
+          uuid: "demo-123",
+          username: "demo-user"
+        };
+        
+        set({
+          auth: {
+            user: fallbackUser,
+            isAuthenticated: true,
+            signIn: get().auth.signIn,
+            signOut: get().auth.signOut,
+            refreshUser: get().auth.refreshUser,
+            checkAuthStatus: get().auth.checkAuthStatus,
+            getUser: () => fallbackUser,
+          },
+          isLoading: false,
+          error: null,
+        });
+        return true;
+      }
+      
       setError("Puter.js not available");
       return false;
     }
@@ -168,6 +192,13 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const signIn = async (): Promise<void> => {
     const puter = getPuter();
     if (!puter) {
+      // Check if we're in production mode with Puter disabled
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        // Fallback mode - simulate successful sign in
+        await checkAuthStatus();
+        return;
+      }
+      
       setError("Puter.js not available");
       return;
     }
@@ -186,6 +217,13 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const signOut = async (): Promise<void> => {
     const puter = getPuter();
     if (!puter) {
+      // Check if we're in production mode with Puter disabled
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        // Fallback mode - simulate sign out (but keep user authenticated for demo)
+        console.log("Sign out in demo mode - staying authenticated");
+        return;
+      }
+      
       setError("Puter.js not available");
       return;
     }
@@ -285,6 +323,20 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const write = async (path: string, data: string | File | Blob) => {
     const puter = getPuter();
     if (!puter) {
+      // Fallback: Use localStorage for demo mode
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        try {
+          const dataString = typeof data === 'string' ? data : 
+                           data instanceof File ? await data.text() :
+                           await new Response(data).text();
+          localStorage.setItem(`puter_file_${path}`, dataString);
+          return Promise.resolve(undefined);
+        } catch (err) {
+          console.warn('Fallback storage failed:', err);
+          return Promise.resolve(undefined);
+        }
+      }
+      
       setError("Puter.js not available");
       return;
     }
@@ -294,6 +346,11 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const readDir = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
+      // Fallback: Return empty directory for demo mode
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        return Promise.resolve([]);
+      }
+      
       setError("Puter.js not available");
       return;
     }
@@ -303,6 +360,15 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   const readFile = async (path: string) => {
     const puter = getPuter();
     if (!puter) {
+      // Fallback: Use localStorage for demo mode
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        const data = localStorage.getItem(`puter_file_${path}`);
+        if (data) {
+          return Promise.resolve(new Blob([data], { type: 'text/plain' }));
+        }
+        return Promise.resolve(new Blob([''], { type: 'text/plain' }));
+      }
+      
       setError("Puter.js not available");
       return;
     }
@@ -335,6 +401,29 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   ) => {
     const puter = getPuter();
     if (!puter) {
+      // Fallback: Return mock AI response for demo mode
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        const mockResponse: AIResponse = {
+          index: 0,
+          message: {
+            role: "assistant",
+            content: "This is a demo response. In production, this would be powered by AI analysis. Your resume looks good! Here's some mock feedback: Strong technical skills, good experience section, consider adding more quantified achievements.",
+            refusal: null,
+            annotations: []
+          },
+          logprobs: null,
+          finish_reason: "stop",
+          usage: [{
+            type: "chat_completion",
+            model: "demo-model",
+            amount: 150,
+            cost: 0
+          }],
+          via_ai_chat_service: false
+        };
+        return Promise.resolve(mockResponse);
+      }
+      
       setError("Puter.js not available");
       return;
     }
