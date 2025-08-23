@@ -46,6 +46,8 @@ interface PuterStore {
   isLoading: boolean;
   error: string | null;
   puterReady: boolean;
+  demoModeInitialized: boolean;
+  initCalled: boolean;
   auth: {
     user: PuterUser | null;
     isAuthenticated: boolean;
@@ -121,25 +123,31 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     if (!puter) {
       // Check if we're in production mode with Puter disabled
       if (typeof window !== "undefined" && (window as any).puterLoadError) {
-        // Enable fallback mode - simulate being authenticated
-        const fallbackUser: PuterUser = {
-          uuid: "demo-123",
-          username: "demo-user"
-        };
+        const currentState = get();
         
-        set({
-          auth: {
-            user: fallbackUser,
-            isAuthenticated: true,
-            signIn: get().auth.signIn,
-            signOut: get().auth.signOut,
-            refreshUser: get().auth.refreshUser,
-            checkAuthStatus: get().auth.checkAuthStatus,
-            getUser: () => fallbackUser,
-          },
-          isLoading: false,
-          error: null,
-        });
+        // Only initialize demo mode once
+        if (!currentState.demoModeInitialized) {
+          // Enable fallback mode - simulate being authenticated
+          const fallbackUser: PuterUser = {
+            uuid: "demo-123",
+            username: "demo-user"
+          };
+          
+          set({
+            auth: {
+              user: fallbackUser,
+              isAuthenticated: true,
+              signIn: get().auth.signIn,
+              signOut: get().auth.signOut,
+              refreshUser: get().auth.refreshUser,
+              checkAuthStatus: get().auth.checkAuthStatus,
+              getUser: () => fallbackUser,
+            },
+            isLoading: false,
+            error: null,
+            demoModeInitialized: true,
+          });
+        }
         return true;
       }
       
@@ -280,9 +288,22 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   };
 
   const init = (): void => {
+    const currentState = get();
+    
+    // Prevent multiple initialization calls
+    if (currentState.initCalled) {
+      return;
+    }
+    
+    set({ initCalled: true });
+    
     // Check if there was a load error
     if (typeof window !== "undefined" && (window as any).puterLoadError) {
-      setError("Puter.js failed to load due to network/SSL issues");
+      // Only initialize demo mode once
+      if (!currentState.demoModeInitialized) {
+        setError("Puter.js failed to load due to network/SSL issues");
+        checkAuthStatus(); // This will set up demo mode
+      }
       return;
     }
 
@@ -550,6 +571,8 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     isLoading: true,
     error: null,
     puterReady: false,
+    demoModeInitialized: false,
+    initCalled: false,
     auth: {
       user: null,
       isAuthenticated: false,

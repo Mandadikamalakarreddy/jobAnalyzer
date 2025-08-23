@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { usePuterStore } from "~/lib/puter";
 
@@ -13,19 +13,26 @@ const auth = () => {
   const urlParams = new URLSearchParams(location.search);
   const next = urlParams.get('next') || '/';
   const navigate = useNavigate();
+  const [hasNavigated, setHasNavigated] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
-  // Check if we're in demo mode (Puter.js failed to load)
-  const isDemoMode = typeof window !== "undefined" && (window as any).puterLoadError;
-
-  useEffect(()=>{
-       if(auth.isAuthenticated) {
-         navigate(next, { replace: true });
-       }
-  },[auth.isAuthenticated, next, navigate])
-
+  // Check demo mode only once on mount
   useEffect(() => {
-    auth.checkAuthStatus();
-  }, [auth.checkAuthStatus]);
+    if (typeof window !== "undefined") {
+      setIsDemoMode(!!(window as any).puterLoadError);
+    }
+  }, []);
+
+  // Handle navigation only once when authenticated
+  useEffect(() => {
+    if (auth.isAuthenticated && !hasNavigated && !isLoading) {
+      setHasNavigated(true);
+      // Small delay to prevent navigation throttling
+      setTimeout(() => {
+        navigate(next, { replace: true });
+      }, 100);
+    }
+  }, [auth.isAuthenticated, hasNavigated, isLoading, next, navigate]);
 
   const handleSignIn = async () => {
     await auth.signIn();

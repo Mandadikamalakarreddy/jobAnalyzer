@@ -28,8 +28,9 @@ export const links: Route.LinksFunction = () => [
 export function Layout({ children }: { children: React.ReactNode }) {
   const { init } = usePuterStore();
   useEffect(() => {
-    init()
-  }, [init]);
+    init();
+  }, []); // Remove init from dependencies to prevent repeated calls
+  
   return (
     <html lang="en">
       <head>
