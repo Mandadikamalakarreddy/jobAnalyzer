@@ -242,6 +242,12 @@ export const usePuterStore = create<PuterStore>((set, get) => {
   };
 
   const init = (): void => {
+    // Check if there was a load error
+    if (typeof window !== "undefined" && (window as any).puterLoadError) {
+      setError("Puter.js failed to load due to network/SSL issues");
+      return;
+    }
+
     const puter = getPuter();
     if (puter) {
       set({ puterReady: true });
@@ -250,6 +256,13 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     }
 
     const interval = setInterval(() => {
+      // Check for load error during polling
+      if (typeof window !== "undefined" && (window as any).puterLoadError) {
+        clearInterval(interval);
+        setError("Puter.js failed to load due to network/SSL issues");
+        return;
+      }
+
       if (getPuter()) {
         clearInterval(interval);
         set({ puterReady: true });
@@ -260,7 +273,11 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     setTimeout(() => {
       clearInterval(interval);
       if (!getPuter()) {
-        setError("Puter.js failed to load within 10 seconds");
+        if (typeof window !== "undefined" && (window as any).puterLoadError) {
+          setError("Puter.js failed to load due to network/SSL issues");
+        } else {
+          setError("Puter.js failed to load within 10 seconds");
+        }
       }
     }, 10000);
   };

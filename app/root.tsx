@@ -39,10 +39,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <script src="https://js.puter.com/v2/"></script>
         {children}
         <ScrollRestoration />
         <Scripts />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                // Skip Puter.js loading in production if SSL issues persist
+                if (window.location.hostname.includes('vercel.app') || window.location.hostname.includes('your-domain.com')) {
+                  console.warn('Puter.js disabled in production due to SSL issues');
+                  window.puterLoadError = true;
+                  return;
+                }
+                
+                const script = document.createElement('script');
+                script.src = 'https://js.puter.com/v2/';
+                script.onerror = function() {
+                  console.warn('Failed to load Puter.js - continuing without it');
+                  window.puterLoadError = true;
+                };
+                script.onload = function() {
+                  console.log('Puter.js loaded successfully');
+                };
+                document.head.appendChild(script);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );
