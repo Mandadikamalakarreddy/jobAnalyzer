@@ -1,6 +1,6 @@
-# 🎯 Resumind - AI-Powered Resume Analyzer
+# 🎯 JobAnalyzer - AI-Powered Job Analysis Platform
 
-**Smart feedback for your dream jobs** - An intelligent resume analysis platform that helps job seekers optimize their resumes using AI-powered insights and ATS (Applicant Tracking System) compatibility scoring.
+**Transform any job posting into your personal interview preparation toolkit** - An intelligent job analysis platform that helps job seekers analyze job descriptions, generate personalized interview questions, practice coding challenges, and get compatibility scores to land their dream job.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
@@ -10,30 +10,40 @@
 
 ## ✨ Features
 
-### 🤖 AI-Powered Analysis
-- **Comprehensive Resume Scoring** - Get detailed feedback across multiple dimensions
-- **ATS Compatibility Check** - Ensure your resume passes through Applicant Tracking Systems
-- **Smart Recommendations** - AI-generated tips to improve your resume's effectiveness
+### 🔍 **Intelligent Job Analysis**
+- **Skills Extraction** - Automatically identify required and preferred skills from any job posting
+- **Experience Level Detection** - Determine the seniority level (entry, mid, senior, lead)
+- **Tech Stack Analysis** - Extract specific technologies and frameworks mentioned
+- **Company Insights** - Analyze company size, industry, and culture indicators
+- **Role Type Classification** - Categorize roles (frontend, backend, fullstack, devops, etc.)
 
-### 📊 Multi-Dimensional Scoring
-- **Overall Score** - Comprehensive resume rating (0-100)
-- **ATS Score** - Applicant Tracking System compatibility
-- **Tone & Style** - Professional language and presentation assessment
-- **Content Quality** - Relevance and impact of your content
-- **Structure & Format** - Organization and visual appeal
-- **Skills Matching** - Alignment with job requirements
+### ❓ **Smart Interview Question Generation**
+- **Behavioral Questions** - Role-specific scenarios and competency-based questions
+- **Technical Questions** - In-depth technical knowledge assessment based on job requirements
+- **Coding Challenges** - Interactive programming problems with difficulty levels (Easy/Medium/Hard)
+- **System Design Questions** - Architecture and design thinking challenges for senior roles
+- **Copy-to-Clipboard** - Easy sharing and note-taking functionality
 
-### 🎨 Modern User Experience
-- **Intuitive Interface** - Clean, modern design with TailwindCSS
-- **Drag & Drop Upload** - Easy PDF resume upload with validation
-- **Real-time Processing** - Live feedback and analysis
-- **Responsive Design** - Works seamlessly on all devices
-- **Visual Analytics** - Score gauges, progress indicators, and detailed breakdowns
+### 💻 **Interactive Coding Practice**
+- **Curated Challenges** - Programming problems tailored to the specific job role
+- **Detailed Solutions** - Step-by-step explanations with optimal approaches
+- **Complexity Analysis** - Time and space complexity breakdowns
+- **Progress Tracking** - Monitor completed challenges and preparation progress
+- **Hints System** - Guided assistance when you're stuck
 
-### 🔐 Secure & Private
-- **User Authentication** - Secure access to your resume data
-- **Data Privacy** - Your resumes are stored securely
-- **Session Management** - Persistent user sessions with Zustand
+### 📊 **Multi-Dimensional Compatibility Scoring**
+- **Overall Match** - Comprehensive compatibility percentage with the role
+- **Skills Alignment** - How well your skills match the requirements
+- **Experience Level Fit** - Seniority level compatibility assessment
+- **Tech Stack Match** - Technology alignment scoring
+- **Culture Fit** - Soft skills and company culture compatibility
+- **Visual Analytics** - Interactive charts and detailed breakdowns
+
+### 🎯 **Comprehensive Interview Preparation**
+- **Preparation Dashboard** - Centralized view of all interview materials
+- **Practice Sessions** - Focused practice with different question types
+- **Progress Monitoring** - Track your preparation across multiple dimensions
+- **Quick Navigation** - Seamless switching between analysis and practice modes
 
 ## 🚀 Quick Start
 
@@ -60,73 +70,102 @@ npm run dev
 ```
 
 4. **Open your browser**
-Navigate to `http://localhost:5173` to see the application in action.
+Navigate to `http://localhost:5173` to start analyzing job postings.
+
+## 🎯 How It Works
+
+### 1. **Paste Job Description**
+Simply copy and paste any job posting from LinkedIn, Indeed, company websites, or recruitment emails. The platform accepts job descriptions of any length and format.
+
+### 2. **AI-Powered Analysis**
+Our intelligent analysis engine:
+- Extracts key skills and technologies
+- Identifies experience requirements
+- Analyzes company culture indicators
+- Generates role-specific interview questions
+- Creates personalized coding challenges
+
+### 3. **Comprehensive Results**
+Get detailed insights including:
+- Skills breakdown (required vs. preferred)
+- Experience level assessment
+- Technical stack analysis
+- Interview question categories
+- Compatibility scoring
+
+### 4. **Interview Preparation**
+Access your personalized preparation toolkit:
+- Practice behavioral questions
+- Solve coding challenges
+- Review technical concepts
+- Track your progress
 
 ## 🛠️ Technology Stack
 
 ### Frontend
 - **React 19** - Latest React with concurrent features
 - **React Router 7** - Modern routing with data loading
-- **TypeScript** - Type-safe development
-- **TailwindCSS 4** - Utility-first CSS framework
-- **Vite** - Lightning-fast build tool
+- **TypeScript** - Type-safe development with comprehensive interfaces
+- **TailwindCSS 4** - Utility-first CSS framework for modern UI
+- **Vite** - Lightning-fast build tool with HMR
 
-### AI & Processing
-- **PDF.js** - Client-side PDF processing and text extraction
-- **AI Integration** - Resume analysis and scoring algorithms
-- **Image Processing** - PDF to image conversion for previews
+### AI & Analysis
+- **Natural Language Processing** - Job description parsing and skill extraction
+- **Pattern Recognition** - Experience level and role type classification
+- **Question Generation** - Context-aware interview question creation
+- **Compatibility Algorithms** - Multi-dimensional scoring system
 
-### State Management
-- **Zustand** - Lightweight state management
-- **React Dropzone** - File upload handling
+### Data & Storage
+- **Puter KV Store** - Secure, persistent data storage
+- **Local Storage** - Client-side session management
+- **JSON Processing** - Structured data handling
 
 ### Build & Development
 - **Vite** - Modern build tool with HMR
 - **ESBuild** - Fast JavaScript bundling
 - **TypeScript Compiler** - Type checking and compilation
+- **PostCSS** - CSS processing and optimization
 
 ## 📁 Project Structure
 
 ```
-resumeanalyser/
+jobanalyzer/
 ├── app/                          # Main application code
 │   ├── components/              # Reusable UI components
-│   │   ├── ATS.tsx             # ATS score display component
-│   │   ├── FileUploader.tsx    # Drag & drop file upload
-│   │   ├── ScoreGauge.tsx      # Visual score indicators
-│   │   └── ...
+│   │   ├── JobUploader.tsx     # Job description input component
+│   │   ├── JobAnalysis.tsx     # Analysis results display
+│   │   ├── QuestionGenerator.tsx # Interview questions interface
+│   │   ├── CodingChallenge.tsx # Interactive coding problems
+│   │   ├── CompatibilityScore.tsx # Scoring visualization
+│   │   └── Navbar.tsx          # Navigation component
 │   ├── routes/                  # Route components
-│   │   ├── home.tsx            # Dashboard with resume list
-│   │   ├── upload.tsx          # Resume upload page
-│   │   ├── resume.tsx          # Detailed analysis view
-│   │   └── auth.tsx            # Authentication
+│   │   ├── home.tsx            # Dashboard with recent analyses
+│   │   ├── analyze-job.tsx     # Job description input page
+│   │   ├── job-analysis.tsx    # Detailed analysis view
+│   │   ├── interview-prep.tsx  # Interview preparation interface
+│   │   ├── auth.tsx            # Authentication
+│   │   └── wipe.tsx            # Data cleanup utility
 │   ├── lib/                     # Utility libraries
-│   │   ├── pdf2image.ts        # PDF processing utilities
-│   │   ├── puter.ts            # Data storage and AI
+│   │   ├── ai-analyzer.ts      # AI analysis engine
+│   │   ├── puter.ts            # Data storage and authentication
 │   │   └── utils.ts            # Common utilities
-│   └── constants/              # App constants and types
+│   └── constants/              # App constants and configurations
 ├── public/                      # Static assets
 │   ├── images/                 # UI images and backgrounds
-│   └── icons/                  # SVG icons
+│   └── icons/                  # SVG icons and graphics
 ├── types/                       # TypeScript definitions
+│   └── index.d.ts              # Global type definitions
 └── build/                      # Production build output
 ```
 
-## 🎯 How It Works
+## � User Interface
 
-1. **Upload Resume** - Users upload their PDF resume through the drag-and-drop interface
-2. **AI Processing** - The system extracts text and analyzes content using AI algorithms
-3. **Multi-Dimensional Scoring** - Resume is scored across 5 key dimensions
-4. **Detailed Feedback** - Users receive specific, actionable recommendations
-5. **Track Progress** - Compare multiple resume versions and track improvements
-
-## 📸 Screenshots
-
-The application features a modern, intuitive interface with:
-- Clean dashboard showing all analyzed resumes
-- Detailed scoring breakdowns with visual indicators
-- Professional color-coded feedback system
-- Responsive design that works on all devices
+The platform features a modern, gradient-based design with:
+- **Intuitive Dashboard** - Overview of all analyzed jobs with quick access
+- **Interactive Analysis** - Tabbed interface for different analysis aspects
+- **Visual Scoring** - Canvas-based charts and progress indicators
+- **Responsive Design** - Seamless experience across all devices
+- **Smooth Animations** - Hover effects and transitions for better UX
 
 ## 🔧 Available Scripts
 
@@ -142,7 +181,7 @@ npm run start           # Start production server
 npm run typecheck       # Run TypeScript type checking
 
 # Post Install
-npm run postinstall     # Copy PDF.js worker files
+npm run postinstall     # Setup post-installation tasks
 ```
 
 ## 🐳 Docker Deployment
@@ -151,20 +190,39 @@ Build and run with Docker:
 
 ```bash
 # Build the image
-docker build -t resumind .
+docker build -t jobanalyzer .
 
 # Run the container
-docker run -p 3000:3000 resumind
+docker run -p 3000:3000 jobanalyzer
 ```
 
 ### Deployment Platforms
 The containerized application can be deployed to:
+- **Vercel** - Optimal for React applications (recommended)
+- **Netlify** - JAMstack deployment platform
 - **AWS ECS** - Elastic Container Service
 - **Google Cloud Run** - Serverless containers
 - **Azure Container Apps** - Managed container platform
-- **Heroku** - Platform as a Service
 - **Railway** - Modern deployment platform
 - **Fly.io** - Global application platform
+
+## 📊 Use Cases
+
+### For Job Seekers
+- **Interview Preparation** - Get role-specific questions and practice materials
+- **Skill Gap Analysis** - Identify missing skills and learning opportunities
+- **Application Strategy** - Understand job requirements better before applying
+- **Confidence Building** - Practice with realistic interview scenarios
+
+### For Career Coaches
+- **Client Preparation** - Generate customized interview materials
+- **Skills Assessment** - Analyze job market requirements
+- **Training Programs** - Create targeted learning paths
+
+### For Recruiters
+- **Question Banks** - Generate interview questions for different roles
+- **Candidate Assessment** - Understand role requirements better
+- **Process Optimization** - Standardize interview preparation
 
 ## 🤝 Contributing
 
@@ -176,6 +234,12 @@ We welcome contributions! Please feel free to submit issues and pull requests.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+### Development Guidelines
+- Follow TypeScript best practices
+- Use semantic commit messages
+- Test new features thoroughly
+- Update documentation as needed
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -183,10 +247,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - Built with modern React Router architecture
-- Powered by AI for intelligent resume analysis
-- Designed with user experience in mind
+- Powered by AI for intelligent job analysis
+- Designed with user experience and interview success in mind
 - Open source and community-driven
 
 ---
 
-**Built with ❤️ for job seekers worldwide** | [Report Bug](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues) | [Request Feature](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues)
+**Built with ❤️ for job seekers worldwide** | [Report Bug](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues) | [Request Feature](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues)#   j o b A n a l y z e r  
+ 
