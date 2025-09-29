@@ -7,17 +7,24 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/">
-        <p className="text-2xl font-bold text-gradient">Resumind</p>
+        <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          JobAnalyzer
+        </p>
       </Link>
-      <div className="flex flex-row gap-4 ">
- <Link to="/upload" className="primary-button w-fit">
-        Upload Resume
-      </Link>
-      <button className="primary-button w-fit" onClick={auth.signOut}>
-        <p> Log Out</p>
-      </button>
+      <div className="flex flex-row gap-4">
+        <Link 
+          to="/analyze-job" 
+          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200"
+        >
+          Analyze Job
+        </Link>
+        <button 
+          className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors" 
+          onClick={auth.signOut}
+        >
+          Log Out
+        </button>
       </div>
-     
     </nav>
   );
 };
