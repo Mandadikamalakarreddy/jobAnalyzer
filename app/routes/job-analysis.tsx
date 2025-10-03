@@ -208,7 +208,7 @@ export default function JobAnalysisPage() {
 
           {/* Tab Navigation - New Design */}
           <div className="flex justify-center mb-12 ">
-            <div className="relative bg-white/5 border border-white/10 p-1 rounded-full shadow-lg backdrop-blur-md p-2">
+            <div className="relative bg-white/5 border border-white/10 p-2 rounded-full shadow-lg backdrop-blur-md">
               <div className="flex">
                 {tabs.map((tab) => (
                   <button

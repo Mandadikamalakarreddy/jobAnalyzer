@@ -194,7 +194,7 @@ We offer competitive salary, comprehensive benefits, and a collaborative remote-
               placeholder="e.g., Google, Microsoft, Startup Inc."
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 bg-gray-800/50 text-gray-800 placeholder:text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="input"
             />
           </div>
 
@@ -211,7 +211,7 @@ We offer competitive salary, comprehensive benefits, and a collaborative remote-
               placeholder="e.g., Remote, San Francisco, CA"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 bg-gray-800/50 text-gray-800 placeholder:text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="input"
             />
           </div>
 
@@ -228,7 +228,7 @@ We offer competitive salary, comprehensive benefits, and a collaborative remote-
               placeholder="https://company.com/jobs/123"
               value={jobUrl}
               onChange={(e) => setJobUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 bg-gray-800/50 text-gray-800 placeholder:text-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="input"
             />
           </div>
         </div>

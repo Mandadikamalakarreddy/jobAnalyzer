@@ -58,35 +58,6 @@ interface Feedback {
   };
 }
 
-// New Job Analysis interfaces
-interface JobAnalysis {
-  id: string;
-  jobTitle: string;
-  jobDescription: string;
-  company: string;
-  analysisDate: string;
-  analysis: {
-    requiredSkills: string[];
-    preferredSkills: string[];
-    experienceLevel: 'entry' | 'mid' | 'senior' | 'lead';
-    technicalStack: string[];
-    roleType: 'frontend' | 'backend' | 'fullstack' | 'devops' | 'data' | 'mobile' | 'other';
-    keyResponsibilities: string[];
-    companyInfo: {
-      size?: string;
-      industry?: string;
-      culture?: string[];
-    };
-    interviewQuestions: {
-      behavioral: string[];
-      technical: string[];
-      coding: CodingQuestion[];
-      systemDesign: string[];
-    };
-    compatibilityScore: CompatibilityScore;
-  };
-}
-
 interface CodingQuestion {
   id: string;
   question: string;
@@ -94,11 +65,20 @@ interface CodingQuestion {
   category: string;
   tags: string[];
   solution: string;
-  codeExample?: string;
-  timeComplexity?: string;
-  spaceComplexity?: string;
-  explanation?: string;
-  hints?: string[];
+  codeExample: string;
+  timeComplexity: string;
+  spaceComplexity: string;
+  explanation: string;
+  hints: string[];
+}
+
+interface JobUploadData {
+  jobTitle: string;
+  jobDescription: string;
+  company: string;
+  location?: string;
+  salary?: string;
+  jobUrl?: string;
 }
 
 interface CompatibilityScore {
@@ -115,32 +95,32 @@ interface CompatibilityScore {
   recommendations: string[];
 }
 
-interface JobUploadData {
+interface InterviewQuestions {
+  behavioral: string[];
+  technical: string[];
+  coding: CodingQuestion[];
+  systemDesign: string[];
+}
+
+interface JobAnalysis {
+  id: string;
   jobTitle: string;
   jobDescription: string;
   company: string;
-  jobUrl?: string;
-  location?: string;
-}
-
-interface InterviewPreparation {
-  jobAnalysisId: string;
-  preparationAreas: {
-    behavioral: {
-      questions: string[];
-      tips: string[];
+  analysisDate: string;
+  analysis: {
+    requiredSkills: string[];
+    preferredSkills: string[];
+    experienceLevel: 'entry' | 'mid' | 'senior' | 'lead';
+    technicalStack: string[];
+    roleType: 'frontend' | 'backend' | 'fullstack' | 'devops' | 'data' | 'mobile' | 'other';
+    keyResponsibilities: string[];
+    companyInfo: {
+      size: string;
+      industry: string;
+      culture: string[];
     };
-    technical: {
-      questions: string[];
-      studyTopics: string[];
-    };
-    coding: {
-      challenges: CodingQuestion[];
-      practiceTopics: string[];
-    };
-    systemDesign: {
-      questions: string[];
-      concepts: string[];
-    };
+    interviewQuestions: InterviewQuestions;
+    compatibilityScore: CompatibilityScore;
   };
 }
