@@ -3,6 +3,13 @@ import { useNavigate, Link } from "react-router";
 import { usePuterStore } from "~/lib/puter";
 import Navbar from "~/components/Navbar";
 
+export function meta() {
+  return [
+    { title: "JobAnalyzer | AI-Powered Job Analysis Platform" },
+    { name: "description", content: "Analyze job descriptions, generate interview questions, and prepare for your dream job with AI-powered insights" },
+  ];
+}
+
 const WipeApp = () => {
     const { auth, isLoading, error, clearError, fs, ai, kv } = usePuterStore();
     const navigate = useNavigate();

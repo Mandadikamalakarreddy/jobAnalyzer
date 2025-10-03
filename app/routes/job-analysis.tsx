@@ -12,7 +12,8 @@ export function meta({ params }: any) {
     { title: `JobAnalyzer | Job Analysis ${jobId}` },
     {
       name: "description",
-      content: "View comprehensive job analysis with AI-powered insights and interview preparation",
+      content:
+        "View comprehensive job analysis with AI-powered insights and interview preparation",
     },
     { name: "robots", content: "noindex, nofollow" },
   ];
@@ -23,7 +24,9 @@ export default function JobAnalysisPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [analysis, setAnalysis] = useState<JobAnalysis | null>(null);
-  const [activeTab, setActiveTab] = useState<'analysis' | 'questions' | 'compatibility'>('analysis');
+  const [activeTab, setActiveTab] = useState<
+    "analysis" | "questions" | "compatibility"
+  >("analysis");
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(true);
 
   useEffect(() => {
@@ -41,16 +44,16 @@ export default function JobAnalysisPage() {
         const analysisData = await kv.get(`job_analysis:${id}`);
 
         if (!analysisData) {
-          console.error('Job analysis not found');
-          navigate('/analyze-job');
+          console.error("Job analysis not found");
+          navigate("/analyze-job");
           return;
         }
 
         const parsedAnalysis = JSON.parse(analysisData);
         setAnalysis(parsedAnalysis);
       } catch (error) {
-        console.error('Error loading job analysis:', error);
-        navigate('/analyze-job');
+        console.error("Error loading job analysis:", error);
+        navigate("/analyze-job");
       } finally {
         setIsLoadingAnalysis(false);
       }
@@ -63,12 +66,12 @@ export default function JobAnalysisPage() {
 
   if (isLoading || isLoadingAnalysis) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="min-h-screen bg-[#1B1B1B] text-white">
         <Navbar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-lg text-gray-600">Loading job analysis...</p>
+            <p className="text-lg text-gray-300">Loading job analysis...</p>
           </div>
         </div>
       </div>
@@ -77,15 +80,19 @@ export default function JobAnalysisPage() {
 
   if (!analysis) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="min-h-screen bg-[#1B1B1B] text-white">
         <Navbar />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Analysis Not Found</h2>
-            <p className="text-gray-600 mb-6">The job analysis you're looking for doesn't exist.</p>
+            <h2 className="text-2xl font-bold text-gray-100 mb-4">
+              Analysis Not Found
+            </h2>
+            <p className="text-gray-300 mb-6">
+              The job analysis you're looking for doesn't exist.
+            </p>
             <Link
               to="/analyze-job"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Analyze New Job
             </Link>
@@ -96,90 +103,189 @@ export default function JobAnalysisPage() {
   }
 
   const tabs = [
-    { id: 'analysis', label: 'Job Analysis', icon: '📋' },
-    { id: 'questions', label: 'Interview Questions', icon: '❓' },
-    { id: 'compatibility', label: 'Compatibility Score', icon: '📊' },
+    {
+      id: "analysis",
+      label: "Job Analysis",
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "questions",
+      label: "Interview Questions",
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "compatibility",
+      label: "Compatibility Score",
+      icon: (
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+          />
+        </svg>
+      ),
+    },
   ] as const;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <main className="min-h-screen bg-[#1B1B1B] text-white">
       <Navbar />
-      
-      <main className="container mx-auto px-4 py-8">
+
+      <section className="mx-auto w-[95%] max-w-5xl px-6 pt-40 pb-24">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Link 
+          <div className="flex items-center gap-4 mb-8">
+            <Link
               to="/analyze-job"
-              className="p-2 text-gray-600 hover:text-gray-800 hover:bg-white rounded-lg transition-colors"
+              className="p-2 text-gray-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
               title="Back to job analyzer"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </Link>
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <div className="flex flex-col gap-4">
+              <span className="text-6xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Job Analysis Results
-              </h1>
-              <p className="text-gray-600">
-                Comprehensive analysis for <strong>{analysis.jobTitle}</strong> at <strong>{analysis.company}</strong>
+              </span>
+              <p className="text-gray-300 leading-relaxed mb-4 text-base">
+                Comprehensive analysis for{" "}
+                <strong className="text-white font-semibold px-1">
+                  {analysis.jobTitle}
+                </strong>
+                at{" "}
+                <strong className="text-white font-semibold px-1">
+                  {analysis.company}
+                </strong>
               </p>
             </div>
           </div>
 
-          {/* Tab Navigation */}
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="border-b border-gray-200">
-              <nav className="flex -mb-px">
+          {/* Tab Navigation - New Design */}
+          <div className="flex justify-center mb-12 ">
+            <div className="relative bg-white/5 border border-white/10 p-1 rounded-full shadow-lg backdrop-blur-md p-2">
+              <div className="flex">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex-1 py-4 px-6 text-sm font-medium border-b-2 transition-colors duration-200 flex items-center justify-center gap-2 ${
+                    className={`relative px-6 py-3 rounded-full font-semibold text-sm transition-all duration-300 ${
                       activeTab === tab.id
-                        ? 'border-blue-500 text-blue-600 bg-blue-50'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        ? "text-white bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg transform scale-105"
+                        : "text-gray-300 hover:text-white"
                     }`}
                   >
-                    <span className="text-lg">{tab.icon}</span>
-                    <span>{tab.label}</span>
+                    <span className="flex items-center space-x-2">
+                      {tab.icon}
+                      <span>{tab.label}</span>
+                    </span>
                   </button>
                 ))}
-              </nav>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Tab Content */}
-        <div className="space-y-6">
-          {activeTab === 'analysis' && <JobAnalysis analysis={analysis} />}
-          {activeTab === 'questions' && <QuestionGenerator analysis={analysis} />}
-          {activeTab === 'compatibility' && <CompatibilityScore compatibilityScore={analysis.analysis.compatibilityScore} />}
+        <div className="space-y-6 rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[0_20px_50px_-30px_rgba(59,130,246,0.6)] backdrop-blur-md md:p-8">
+          {activeTab === "analysis" && <JobAnalysis analysis={analysis} />}
+          {activeTab === "questions" && (
+            <QuestionGenerator analysis={analysis} />
+          )}
+          {activeTab === "compatibility" && (
+            <CompatibilityScore
+              compatibilityScore={analysis.analysis.compatibilityScore}
+            />
+          )}
         </div>
 
         {/* Action Buttons */}
         <div className="mt-8 flex justify-center gap-4">
           <Link
             to="/analyze-job"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
             Analyze Another Job
           </Link>
           <Link
             to={`/interview-prep/${id}`}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
+            className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
             </svg>
             Interview Preparation
           </Link>
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }

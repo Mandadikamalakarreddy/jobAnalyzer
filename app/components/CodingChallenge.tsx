@@ -15,9 +15,9 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
 
   const getDifficultyColor = (difficulty: string) => {
     const colors = {
-      easy: 'bg-green-100 text-green-800 border-green-300',
-      medium: 'bg-yellow-100 text-yellow-800 border-yellow-300',
-      hard: 'bg-red-100 text-red-800 border-red-300',
+      easy: 'bg-green-500/20 text-green-200 border-green-400/30',
+      medium: 'bg-yellow-500/20 text-yellow-200 border-yellow-400/30',
+      hard: 'bg-red-500/20 text-red-200 border-red-400/30',
     };
     return colors[difficulty as keyof typeof colors] || colors.medium;
   };
@@ -46,28 +46,28 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
   };
 
   return (
-    <div className={cn("bg-white rounded-xl shadow-lg overflow-hidden", className)}>
+    <div className={cn("bg-white/5 border border-white/10 backdrop-blur-md rounded-xl overflow-hidden", className)}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 border-b border-gray-200">
+      <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 border-b border-white/10">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3">
               <span className={cn("px-3 py-1 rounded-full text-sm font-medium border", getDifficultyColor(challenge.difficulty))}>
                 {getDifficultyIcon(challenge.difficulty)} {challenge.difficulty.charAt(0).toUpperCase() + challenge.difficulty.slice(1)}
               </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+              <span className="bg-blue-500/30 text-blue-200 px-3 py-1 rounded-full text-sm font-medium">
                 {challenge.category}
               </span>
               {isCompleted && (
-                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                <span className="bg-green-500/30 text-green-200 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
                   ✅ Completed
                 </span>
               )}
             </div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">{challenge.question}</h3>
+            <h3 className="text-xl font-bold text-gray-100 mb-2">{challenge.question}</h3>
             <div className="flex flex-wrap gap-2">
               {challenge.tags.map((tag, index) => (
-                <span key={index} className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-sm">
+                <span key={index} className="bg-white/10 text-gray-300 px-2 py-1 rounded text-sm">
                   #{tag}
                 </span>
               ))}
@@ -76,7 +76,7 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
           <div className="flex flex-col gap-2">
             <button
               onClick={() => copyToClipboard(challenge.question)}
-              className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+              className="p-2 text-blue-300 hover:bg-blue-500/30 rounded-lg transition-colors"
               title="Copy question"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,8 +88,8 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
               className={cn(
                 "p-2 rounded-lg transition-colors",
                 isCompleted 
-                  ? "text-green-600 hover:bg-green-100" 
-                  : "text-gray-600 hover:bg-gray-100"
+                  ? "text-green-300 hover:bg-green-500/30" 
+                  : "text-gray-300 hover:bg-white/10"
               )}
               title={isCompleted ? "Mark as incomplete" : "Mark as complete"}
             >
@@ -109,17 +109,17 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
       <div className="p-6 space-y-6">
         {/* Problem Description */}
         {challenge.explanation && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-800 mb-2">Problem Description</h4>
-            <p className="text-blue-700">{challenge.explanation}</p>
+          <div className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4">
+            <h4 className="font-semibold text-blue-200 mb-2">Problem Description</h4>
+            <p className="text-blue-100">{challenge.explanation}</p>
           </div>
         )}
 
         {/* Example */}
         {challenge.codeExample && (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-            <h4 className="font-semibold text-gray-800 mb-2">Example</h4>
-            <pre className="text-sm text-gray-700 font-mono">
+          <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+            <h4 className="font-semibold text-gray-100 mb-2">Example</h4>
+            <pre className="text-sm text-gray-300 font-mono">
               <code>{challenge.codeExample}</code>
             </pre>
           </div>
@@ -133,8 +133,8 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
               className={cn(
                 "px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2",
                 showHints
-                  ? "bg-orange-100 text-orange-800 border border-orange-200"
-                  : "bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-100"
+                  ? "bg-orange-500/30 text-orange-200 border border-orange-400/30"
+                  : "bg-orange-500/20 text-orange-300 border border-orange-400/30 hover:bg-orange-500/30"
               )}
             >
               💡 {showHints ? 'Hide Hints' : `Show Hints (${challenge.hints.length})`}
@@ -146,8 +146,8 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
             className={cn(
               "px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2",
               showSolution
-                ? "bg-green-100 text-green-800 border border-green-200"
-                : "bg-green-50 text-green-600 border border-green-200 hover:bg-green-100"
+                ? "bg-green-500/30 text-green-200 border border-green-400/30"
+                : "bg-green-500/20 text-green-300 border border-green-400/30 hover:bg-green-500/30"
             )}
           >
             👁️ {showSolution ? 'Hide Solution' : 'Show Solution'}
@@ -156,15 +156,15 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
 
         {/* Hints Section */}
         {showHints && challenge.hints && challenge.hints.length > 0 && (
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-            <h4 className="font-semibold text-orange-800 mb-3">💡 Hints</h4>
+          <div className="bg-orange-500/20 border border-orange-400/30 rounded-lg p-4">
+            <h4 className="font-semibold text-orange-200 mb-3">💡 Hints</h4>
             <div className="space-y-2">
               {challenge.hints.map((hint, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <span className="bg-orange-200 text-orange-800 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0">
+                  <span className="bg-orange-500/30 text-orange-200 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0">
                     {index + 1}
                   </span>
-                  <p className="text-orange-700">{hint}</p>
+                  <p className="text-orange-100">{hint}</p>
                 </div>
               ))}
             </div>
@@ -172,10 +172,10 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
         )}
 
         {/* Your Solution Area */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-gray-800">Your Solution</h4>
-            <div className="text-sm text-gray-600">
+            <h4 className="font-semibold text-gray-100">Your Solution</h4>
+            <div className="text-sm text-gray-300">
               {userCode.length} characters
             </div>
           </div>
@@ -183,16 +183,16 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
             value={userCode}
             onChange={(e) => setUserCode(e.target.value)}
             placeholder="Write your solution here..."
-            className="w-full h-48 p-3 border border-gray-300 rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full h-48 p-3 bg-gray-800/70 border border-white/20 text-gray-200 placeholder-gray-400 rounded-lg font-mono text-sm resize-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
           />
           <div className="flex justify-between items-center mt-3">
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-400">
               Tip: Write your approach step by step, then implement the solution
             </div>
             <button
               onClick={() => copyToClipboard(userCode)}
               disabled={!userCode.trim()}
-              className="px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded hover:bg-blue-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1 text-sm bg-blue-500/30 text-blue-200 rounded hover:bg-blue-500/40 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Copy Code
             </button>
@@ -201,37 +201,37 @@ export default function CodingChallenge({ challenge, className, onComplete }: Co
 
         {/* Solution Section */}
         {showSolution && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="bg-green-500/20 border border-green-400/30 rounded-lg p-4">
             <div className="flex items-center justify-between mb-3">
-              <h4 className="font-semibold text-green-800 flex items-center gap-2">
+              <h4 className="font-semibold text-green-200 flex items-center gap-2">
                 ✅ Optimal Solution
               </h4>
               <button
                 onClick={() => copyToClipboard(challenge.solution)}
-                className="px-3 py-1 text-sm bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors"
+                className="px-3 py-1 text-sm bg-green-500/30 text-green-200 rounded hover:bg-green-500/40 transition-colors"
               >
                 Copy Solution
               </button>
             </div>
-            <pre className="bg-white p-4 rounded-lg border border-green-200 overflow-x-auto text-sm">
-              <code className="text-gray-800">{challenge.solution}</code>
+            <pre className="bg-gray-800/70 p-4 rounded-lg border border-white/10 overflow-x-auto text-sm">
+              <code className="text-gray-200">{challenge.solution}</code>
             </pre>
 
             {/* Complexity Analysis */}
             {(challenge.timeComplexity || challenge.spaceComplexity) && (
-              <div className="mt-4 pt-4 border-t border-green-200">
-                <h5 className="font-semibold text-green-800 mb-2">Complexity Analysis</h5>
+              <div className="mt-4 pt-4 border-t border-green-400/30">
+                <h5 className="font-semibold text-green-200 mb-2">Complexity Analysis</h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {challenge.timeComplexity && (
-                    <div className="bg-white p-3 rounded border border-green-200">
-                      <div className="text-sm font-medium text-gray-700">Time Complexity</div>
-                      <div className="text-lg font-mono text-green-700">{challenge.timeComplexity}</div>
+                    <div className="bg-white/5 p-3 rounded border border-white/10">
+                      <div className="text-sm font-medium text-gray-300">Time Complexity</div>
+                      <div className="text-lg font-mono text-green-200">{challenge.timeComplexity}</div>
                     </div>
                   )}
                   {challenge.spaceComplexity && (
-                    <div className="bg-white p-3 rounded border border-green-200">
-                      <div className="text-sm font-medium text-gray-700">Space Complexity</div>
-                      <div className="text-lg font-mono text-green-700">{challenge.spaceComplexity}</div>
+                    <div className="bg-white/5 p-3 rounded border border-white/10">
+                      <div className="text-sm font-medium text-gray-300">Space Complexity</div>
+                      <div className="text-lg font-mono text-green-200">{challenge.spaceComplexity}</div>
                     </div>
                   )}
                 </div>
