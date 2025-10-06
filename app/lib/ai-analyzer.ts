@@ -581,27 +581,71 @@ const generateInterviewQuestions = (
 /**
  * Generates role-specific behavioral questions
  */
-const generateBehavioralQuestions = (jobTitle: string, roleType: string): string[] => {
-  const baseQuestions = [
-    "Tell me about a challenging project you worked on and how you overcame obstacles.",
-    "Describe a time when you had to learn a new technology quickly. How did you approach it?",
-    "How do you handle conflicting priorities and tight deadlines?",
-    "Tell me about a time you had to work with a difficult team member. How did you handle it?",
-    "Describe a situation where you had to make a technical decision with incomplete information."
+const generateBehavioralQuestions = (jobTitle: string, roleType: string): QuestionWithAnswer[] => {
+  const baseQuestions: QuestionWithAnswer[] = [
+    {
+      question: "Tell me about a challenging project you worked on and how you overcame obstacles.",
+      answer: "Use the STAR method: Describe the Situation (project context), Task (your responsibility), Action (steps you took to overcome obstacles), and Result (outcome and lessons learned). Focus on technical challenges, team collaboration, and problem-solving approaches.",
+      tips: ["Be specific about the obstacles you faced", "Highlight your problem-solving process", "Mention measurable outcomes or improvements"]
+    },
+    {
+      question: "Describe a time when you had to learn a new technology quickly. How did you approach it?",
+      answer: "Explain your learning strategy: reading documentation, building small projects, following tutorials, and practicing. Emphasize how you applied this new knowledge to solve a real problem and the timeline in which you became proficient.",
+      tips: ["Show your learning methodology", "Mention resources you used (docs, courses, tutorials)", "Demonstrate the practical application of what you learned"]
+    },
+    {
+      question: "How do you handle conflicting priorities and tight deadlines?",
+      answer: "Discuss your prioritization framework (e.g., impact vs. effort matrix), communication with stakeholders, breaking down tasks, and time management strategies. Include how you negotiate deadlines and manage expectations.",
+      tips: ["Show your organizational skills", "Mention specific tools or techniques you use", "Highlight communication with team and stakeholders"]
+    },
+    {
+      question: "Tell me about a time you had to work with a difficult team member. How did you handle it?",
+      answer: "Focus on empathy, active listening, and finding common ground. Describe how you addressed concerns professionally, sought to understand their perspective, and worked towards a collaborative solution that benefited the project.",
+      tips: ["Avoid speaking negatively about others", "Emphasize professional communication and conflict resolution", "Show how you maintained team productivity"]
+    },
+    {
+      question: "Describe a situation where you had to make a technical decision with incomplete information.",
+      answer: "Explain your decision-making process: gathering available data, consulting with team members, weighing pros and cons, considering risks, and making an informed choice. Discuss the outcome and what you learned from the experience.",
+      tips: ["Show your analytical thinking", "Mention how you mitigated risks", "Explain how you validated your decision afterwards"]
+    }
   ];
 
-  const roleSpecific: Record<string, string[]> = {
+  const roleSpecific: Record<string, QuestionWithAnswer[]> = {
     frontend: [
-      "Describe a time when you had to optimize a web application's performance.",
-      "How do you balance user experience with development timelines?"
+      {
+        question: "Describe a time when you had to optimize a web application's performance.",
+        answer: "Describe the performance issues you identified (e.g., slow load times, high bounce rate), tools used for profiling (Lighthouse, Chrome DevTools), optimizations implemented (code splitting, lazy loading, image optimization), and measurable improvements achieved.",
+        tips: ["Mention specific metrics before and after", "Discuss tools used for performance monitoring", "Highlight user impact of your optimizations"]
+      },
+      {
+        question: "How do you balance user experience with development timelines?",
+        answer: "Discuss prioritization strategies, MVP approach, iterative development, and stakeholder communication. Explain how you identify must-have vs. nice-to-have features and advocate for user experience while meeting business deadlines.",
+        tips: ["Show understanding of business constraints", "Mention user research or feedback incorporation", "Demonstrate pragmatic decision-making"]
+      }
     ],
     backend: [
-      "Tell me about a time you designed and implemented a scalable API.",
-      "Describe how you handled a critical production bug."
+      {
+        question: "Tell me about a time you designed and implemented a scalable API.",
+        answer: "Describe the API requirements, design decisions (REST/GraphQL), scalability considerations (caching, rate limiting, load balancing), technologies used, and how you tested and validated scalability under load.",
+        tips: ["Mention specific scalability patterns used", "Discuss performance metrics and benchmarks", "Highlight design trade-offs you considered"]
+      },
+      {
+        question: "Describe how you handled a critical production bug.",
+        answer: "Walk through your incident response: detection, immediate mitigation, root cause analysis, permanent fix, and preventive measures. Emphasize communication with stakeholders, documentation, and lessons learned.",
+        tips: ["Show your debugging methodology", "Mention monitoring and alerting systems", "Highlight how you prevented similar issues"]
+      }
     ],
     fullstack: [
-      "How do you decide between implementing logic on the frontend vs backend?",
-      "Describe a project where you owned both frontend and backend development."
+      {
+        question: "How do you decide between implementing logic on the frontend vs backend?",
+        answer: "Discuss factors like security (sensitive operations on backend), performance (reduce server load), user experience (immediate feedback), and maintainability. Provide specific examples of decisions you've made and their rationale.",
+        tips: ["Mention security considerations", "Discuss performance implications", "Show understanding of separation of concerns"]
+      },
+      {
+        question: "Describe a project where you owned both frontend and backend development.",
+        answer: "Detail the project scope, architecture decisions, how you ensured consistency across layers, challenges faced (context switching, different tech stacks), and the successful delivery. Highlight coordination and full-stack thinking.",
+        tips: ["Show your versatility across the stack", "Mention how you ensured API contract consistency", "Highlight project management and prioritization"]
+      }
     ]
   };
 
@@ -611,42 +655,134 @@ const generateBehavioralQuestions = (jobTitle: string, roleType: string): string
 /**
  * Generates technical questions based on role and skills
  */
-const generateTechnicalQuestions = (roleType: string, requiredSkills: string[]): string[] => {
-  const questionBank: Record<string, string[]> = {
+const generateTechnicalQuestions = (roleType: string, requiredSkills: string[]): QuestionWithAnswer[] => {
+  const questionBank: Record<string, QuestionWithAnswer[]> = {
     frontend: [
-      "Explain the virtual DOM and how React uses it for performance optimization.",
-      "What are the differences between CSS Grid and Flexbox? When would you use each?",
-      "How do you optimize web application performance and reduce bundle size?",
-      "Explain the concept of Web Accessibility (a11y) and its importance.",
-      "What are Progressive Web Apps (PWAs) and their key features?"
+      {
+        question: "Explain the virtual DOM and how React uses it for performance optimization.",
+        answer: "The Virtual DOM is a lightweight copy of the actual DOM. React uses it to batch updates: when state changes, React creates a new Virtual DOM tree, compares it with the previous one (diffing), calculates the minimal set of changes needed, and updates only those parts of the real DOM. This reduces expensive DOM manipulations and improves performance.",
+        tips: ["Mention reconciliation algorithm", "Discuss batching of updates", "Explain the performance benefits over direct DOM manipulation"]
+      },
+      {
+        question: "What are the differences between CSS Grid and Flexbox? When would you use each?",
+        answer: "Flexbox is one-dimensional (row or column) and best for component-level layouts, navigation bars, or distributing space among items. CSS Grid is two-dimensional (rows and columns) and ideal for page-level layouts, complex designs, or when you need precise control over both dimensions. Often used together: Grid for overall layout, Flexbox for components within grid cells.",
+        tips: ["Mention one-dimensional vs two-dimensional", "Provide specific use cases for each", "Discuss when to combine both"]
+      },
+      {
+        question: "How do you optimize web application performance and reduce bundle size?",
+        answer: "Key strategies include: code splitting (dynamic imports), lazy loading components, tree shaking to remove unused code, optimizing images (WebP format, compression), minification, using CDN, implementing caching strategies, and analyzing bundles with tools like webpack-bundle-analyzer. Also consider using performance budgets and monitoring Core Web Vitals.",
+        tips: ["Mention specific tools and techniques", "Discuss measurable metrics (LCP, FID, CLS)", "Highlight the importance of monitoring and measurement"]
+      },
+      {
+        question: "Explain the concept of Web Accessibility (a11y) and its importance.",
+        answer: "Web accessibility ensures websites are usable by people with disabilities. Key aspects include: semantic HTML, keyboard navigation, ARIA labels, proper contrast ratios, screen reader compatibility, and alt text for images. It's important for inclusivity, legal compliance (ADA, WCAG), SEO benefits, and reaching a wider audience. Accessibility also improves overall usability for all users.",
+        tips: ["Mention WCAG guidelines", "Discuss testing tools (axe, Lighthouse)", "Highlight both moral and business reasons"]
+      },
+      {
+        question: "What are Progressive Web Apps (PWAs) and their key features?",
+        answer: "PWAs are web applications that use modern web capabilities to provide an app-like experience. Key features include: offline functionality (service workers), installability (add to home screen), responsive design, push notifications, fast loading, and HTTPS requirement. They bridge the gap between web and native apps, offering better performance and engagement without app store distribution.",
+        tips: ["Mention service workers and manifest file", "Discuss advantages over traditional web apps", "Explain the installation process"]
+      }
     ],
     backend: [
-      "Explain the difference between SQL and NoSQL databases and when to use each.",
-      "What are the key principles of RESTful API design?",
-      "How do you handle authentication and authorization in your applications?",
-      "Explain database indexing and its impact on performance.",
-      "What are microservices and what are their advantages and disadvantages?"
+      {
+        question: "Explain the difference between SQL and NoSQL databases and when to use each.",
+        answer: "SQL databases (MySQL, PostgreSQL) are relational, use structured schemas, support ACID transactions, and are ideal for complex queries and relationships. NoSQL databases (MongoDB, Redis) are non-relational, schema-flexible, horizontally scalable, and better for unstructured data, high-volume operations, and rapid development. Choose SQL for complex transactions and data integrity; NoSQL for scalability, flexibility, and high-speed operations.",
+        tips: ["Compare ACID vs BASE properties", "Mention specific use cases for each", "Discuss scalability considerations"]
+      },
+      {
+        question: "What are the key principles of RESTful API design?",
+        answer: "REST principles include: statelessness (each request contains all needed information), client-server separation, uniform interface (standard HTTP methods), cacheability, layered system, and resource-based URLs. Best practices: use proper HTTP methods (GET, POST, PUT, DELETE), meaningful URLs, appropriate status codes, versioning, pagination for large datasets, and comprehensive documentation.",
+        tips: ["Mention HTTP methods and status codes", "Discuss resource naming conventions", "Highlight importance of consistency"]
+      },
+      {
+        question: "How do you handle authentication and authorization in your applications?",
+        answer: "Authentication verifies identity (who you are) using methods like JWT tokens, OAuth, or session cookies. Authorization determines permissions (what you can access) using role-based (RBAC) or attribute-based (ABAC) access control. Implement secure password hashing (bcrypt), HTTPS, token expiration, refresh tokens, and protect against common attacks (XSS, CSRF). Store sensitive data securely and never expose credentials.",
+        tips: ["Differentiate authentication from authorization", "Mention security best practices", "Discuss token management strategies"]
+      },
+      {
+        question: "Explain database indexing and its impact on performance.",
+        answer: "Indexes are data structures (typically B-trees) that improve query performance by creating a searchable path to data. They speed up SELECT queries and WHERE clauses but slow down INSERT/UPDATE/DELETE operations due to index maintenance. Best practices: index foreign keys, frequently queried columns, and JOIN columns. Avoid over-indexing. Use EXPLAIN to analyze query performance and choose appropriate index types (B-tree, Hash, Full-text).",
+        tips: ["Explain the trade-offs of indexing", "Mention different index types", "Discuss query optimization strategies"]
+      },
+      {
+        question: "What are microservices and what are their advantages and disadvantages?",
+        answer: "Microservices architecture splits applications into small, independent services that communicate via APIs. Advantages: independent deployment, technology flexibility, scalability, fault isolation. Disadvantages: increased complexity, network latency, distributed data management, harder testing and debugging. Best for large, complex applications with multiple teams. Requires strong DevOps practices, monitoring, and orchestration (Kubernetes).",
+        tips: ["Compare with monolithic architecture", "Mention communication patterns (REST, gRPC, message queues)", "Discuss when microservices are appropriate"]
+      }
     ],
     fullstack: [
-      "How do you ensure data consistency between frontend and backend?",
-      "Explain the concept of server-side rendering vs client-side rendering.",
-      "What strategies do you use for API versioning?",
-      "How do you handle state management in large applications?",
-      "Explain caching strategies at different layers of an application."
+      {
+        question: "How do you ensure data consistency between frontend and backend?",
+        answer: "Strategies include: defining clear API contracts, using TypeScript for type safety across layers, implementing optimistic updates with rollback mechanisms, WebSocket for real-time sync, state management (Redux, Zustand), API validation on both sides, versioning, and comprehensive testing. Consider eventual consistency for distributed systems and use proper error handling to maintain data integrity.",
+        tips: ["Mention specific tools and patterns", "Discuss optimistic vs pessimistic updates", "Highlight importance of validation"]
+      },
+      {
+        question: "Explain the concept of server-side rendering vs client-side rendering.",
+        answer: "CSR: JavaScript renders content in browser, better for interactive SPAs, slower initial load, worse SEO. SSR: Server generates HTML, faster first paint, better SEO and social media sharing. Modern approaches include Static Site Generation (SSG) and Incremental Static Regeneration (ISR). Next.js and similar frameworks offer hybrid approaches, combining SSR/SSG/CSR benefits based on page requirements.",
+        tips: ["Discuss performance implications", "Mention SEO considerations", "Explain hybrid approaches (Next.js, Remix)"]
+      },
+      {
+        question: "What strategies do you use for API versioning?",
+        answer: "Common strategies: URL versioning (/api/v1/users), header versioning (Accept: application/vnd.api+json;version=1), query parameter versioning (?version=1). Best practices: maintain backward compatibility when possible, deprecate old versions gradually with clear timelines, document changes thoroughly, use semantic versioning, and communicate changes to API consumers well in advance.",
+        tips: ["Compare different versioning approaches", "Discuss deprecation strategies", "Mention documentation importance"]
+      },
+      {
+        question: "How do you handle state management in large applications?",
+        answer: "Approaches depend on complexity: React Context for simple shared state, Redux/Redux Toolkit for complex global state with predictable updates, Zustand for lightweight centralized state, React Query/SWR for server state management. Key principles: separate UI state from server state, avoid prop drilling, use selectors for performance, implement proper state normalization, and choose tools appropriate to application scale.",
+        tips: ["Mention different state management solutions", "Discuss when to use each approach", "Highlight performance considerations"]
+      },
+      {
+        question: "Explain caching strategies at different layers of an application.",
+        answer: "Client-side: browser cache (Cache-Control headers), service workers, local/session storage. Server-side: application-level caching (Redis, Memcached), database query caching. CDN caching for static assets. Strategies include: cache invalidation (time-based, event-based), cache-aside pattern, write-through cache. Consider cache coherence in distributed systems and implement proper cache warming and monitoring.",
+        tips: ["Describe caching at multiple layers", "Mention cache invalidation strategies", "Discuss CDN usage"]
+      }
     ],
     devops: [
-      "Explain the CI/CD pipeline and its components.",
-      "What is Infrastructure as Code (IaC) and why is it important?",
-      "How do you monitor and debug issues in a distributed system?",
-      "Explain containerization and orchestration with Docker and Kubernetes.",
-      "What are blue-green deployments and canary releases?"
+      {
+        question: "Explain the CI/CD pipeline and its components.",
+        answer: "CI/CD automates software delivery. CI (Continuous Integration): developers merge code frequently, automated builds and tests run on each commit. CD (Continuous Deployment/Delivery): automated deployment to staging/production. Components include: version control, build automation, automated testing, artifact repository, deployment automation, monitoring. Tools: Jenkins, GitHub Actions, GitLab CI, CircleCI.",
+        tips: ["Explain CI vs CD distinction", "Mention specific tools and stages", "Discuss benefits and best practices"]
+      },
+      {
+        question: "What is Infrastructure as Code (IaC) and why is it important?",
+        answer: "IaC manages infrastructure through code rather than manual processes. Tools like Terraform, CloudFormation, or Ansible define infrastructure declaratively. Benefits: version control for infrastructure, reproducibility, consistency across environments, automated provisioning, documentation through code, and easier disaster recovery. Enables GitOps workflows and treats infrastructure changes like application code with reviews and testing.",
+        tips: ["Mention specific IaC tools", "Discuss declarative vs imperative approaches", "Highlight version control benefits"]
+      },
+      {
+        question: "How do you monitor and debug issues in a distributed system?",
+        answer: "Use comprehensive observability: logging (centralized with ELK/Splunk), metrics (Prometheus, Grafana), distributed tracing (Jaeger, Zipkin), APM tools (New Relic, Datadog). Implement correlation IDs for request tracking, health checks, alerting with proper thresholds, and post-mortem analysis. Challenges include: clock synchronization, complex failure modes, and cascading failures. Use structured logging and proper instrumentation.",
+        tips: ["Mention the three pillars of observability", "Discuss distributed tracing", "Highlight importance of correlation IDs"]
+      },
+      {
+        question: "Explain containerization and orchestration with Docker and Kubernetes.",
+        answer: "Docker packages applications with dependencies into containers for consistency across environments. Kubernetes orchestrates containers at scale: automatic scaling, self-healing, load balancing, rolling updates, service discovery. Key concepts: Pods (container groups), Services (networking), Deployments (desired state), ConfigMaps/Secrets (configuration). Benefits: portability, resource efficiency, microservices support, and simplified deployment.",
+        tips: ["Explain containers vs VMs", "Describe Kubernetes key concepts", "Discuss benefits for production deployments"]
+      },
+      {
+        question: "What are blue-green deployments and canary releases?",
+        answer: "Blue-green: maintain two identical production environments. Deploy to inactive environment (green), test, then switch traffic from active (blue). Instant rollback if issues arise. Canary: gradually roll out changes to small subset of users, monitor metrics, then progressively increase traffic. Both reduce deployment risk. Canary is better for incremental validation; blue-green for instant rollback capability.",
+        tips: ["Compare both deployment strategies", "Mention when to use each", "Discuss monitoring requirements"]
+      }
     ]
   };
 
-  const baseQuestions = [
-    "Explain the concept of version control and branching strategies.",
-    "What are some common security vulnerabilities in web applications and how do you prevent them?",
-    "How do you ensure code quality in your projects?"
+  const baseQuestions: QuestionWithAnswer[] = [
+    {
+      question: "Explain the concept of version control and branching strategies.",
+      answer: "Version control (Git) tracks code changes over time. Common branching strategies: Git Flow (master, develop, feature branches), GitHub Flow (main branch with feature branches), trunk-based development (short-lived branches). Best practices: meaningful commit messages, frequent commits, code reviews via pull requests, protected main branch, and clear branching conventions for features, hotfixes, and releases.",
+      tips: ["Mention specific branching models", "Discuss merge vs rebase", "Highlight importance of code reviews"]
+    },
+    {
+      question: "What are some common security vulnerabilities in web applications and how do you prevent them?",
+      answer: "OWASP Top 10 includes: SQL Injection (use parameterized queries), XSS (sanitize input, Content Security Policy), CSRF (tokens, SameSite cookies), insecure authentication, sensitive data exposure, broken access control. Prevention: input validation, output encoding, HTTPS, security headers, regular updates, security audits, principle of least privilege, and proper error handling without exposing system details.",
+      tips: ["Reference OWASP Top 10", "Mention specific prevention techniques", "Discuss security testing tools"]
+    },
+    {
+      question: "How do you ensure code quality in your projects?",
+      answer: "Multiple approaches: code reviews, linting (ESLint, Prettier), static analysis, unit/integration tests with good coverage, TypeScript for type safety, CI/CD with automated testing, consistent coding standards, documentation, pair programming, and regular refactoring. Use tools like SonarQube for code quality metrics. Emphasize test-driven development (TDD) and maintain a definition of done that includes quality criteria.",
+      tips: ["Mention specific tools and practices", "Discuss automated vs manual quality checks", "Highlight continuous improvement mindset"]
+    }
   ];
 
   const roleQuestions = questionBank[roleType] || questionBank.fullstack;
@@ -686,36 +822,84 @@ const selectCodingQuestions = (roleType: string, requiredSkills: string[]): Codi
 /**
  * Generates system design questions based on role
  */
-const generateSystemDesignQuestions = (roleType: string): string[] => {
-  const questionBank: Record<string, string[]> = {
+const generateSystemDesignQuestions = (roleType: string): QuestionWithAnswer[] => {
+  const questionBank: Record<string, QuestionWithAnswer[]> = {
     frontend: [
-      "Design a real-time collaborative document editor like Google Docs.",
-      "How would you implement infinite scrolling with optimal performance?"
+      {
+        question: "Design a real-time collaborative document editor like Google Docs.",
+        answer: "Key components: WebSocket/WebRTC for real-time communication, Operational Transformation (OT) or CRDT for conflict resolution, efficient diffing algorithm, presence indicators, version history with snapshots. Architecture: client-side editor (e.g., Quill, Slate), backend coordination server, database for persistence, caching layer. Consider: cursor positions, selection sync, offline mode, scalability with rooms/channels, and conflict-free merging of concurrent edits.",
+        tips: ["Discuss conflict resolution algorithms (OT vs CRDT)", "Mention scalability for multiple users", "Consider offline capabilities and sync", "Explain how to handle concurrent edits"]
+      },
+      {
+        question: "How would you implement infinite scrolling with optimal performance?",
+        answer: "Use Intersection Observer API to detect when user approaches bottom, implement virtual scrolling/windowing (only render visible items), pagination with cursor-based approach, debounce scroll events, lazy load images, maintain fixed item heights for performance. Libraries: react-window, react-virtualized. Consider: skeleton loading states, error handling, 'load more' button fallback, SEO implications (hydration), and memory management for large lists.",
+        tips: ["Explain virtual scrolling concept", "Discuss Intersection Observer API", "Mention performance optimization techniques", "Consider accessibility and SEO"]
+      }
     ],
     backend: [
-      "Design a URL shortening service like bit.ly with analytics.",
-      "Design a distributed cache system like Redis."
+      {
+        question: "Design a URL shortening service like bit.ly with analytics.",
+        answer: "Components: API for creating/retrieving URLs, hash generation (base62 encoding), database (key-value store like Redis for cache, SQL/NoSQL for persistence), analytics tracking (clicks, locations, referrers). Architecture: load balancer, stateless API servers, distributed cache, database with replication. Consider: collision handling, custom aliases, expiration, rate limiting, global distribution (CDN), and real-time analytics with message queues.",
+        tips: ["Discuss hash generation strategies", "Explain database choice and schema", "Consider scalability and caching", "Mention analytics tracking approach"]
+      },
+      {
+        question: "Design a distributed cache system like Redis.",
+        answer: "Features: in-memory key-value store, data structures (strings, lists, sets, hashes), persistence (RDB snapshots, AOF logs), replication for high availability, clustering for horizontal scaling, pub/sub messaging. Architecture: master-replica setup, consistent hashing for data distribution, eviction policies (LRU, LFU), TTL support. Challenges: cache invalidation, cache stampede prevention, network partitioning (split-brain), and ensuring data consistency.",
+        tips: ["Explain caching strategies and eviction policies", "Discuss replication and consistency", "Mention partitioning and sharding", "Consider failure scenarios"]
+      }
     ],
     fullstack: [
-      "Design a social media platform like Twitter.",
-      "Design a ride-sharing application like Uber."
+      {
+        question: "Design a social media platform like Twitter.",
+        answer: "Components: user service, tweet service, timeline service (feed generation), notification service, media service, search service. Architecture: microservices, message queues (Kafka), databases (SQL for users, NoSQL for tweets), caching (Redis), CDN for media, search engine (Elasticsearch). Key challenges: feed generation at scale (fan-out on write vs read), real-time updates, trending topics, load balancing, and handling viral content spikes.",
+        tips: ["Discuss feed generation strategies", "Explain microservices architecture", "Consider scalability for millions of users", "Mention real-time features implementation"]
+      },
+      {
+        question: "Design a ride-sharing application like Uber.",
+        answer: "Components: user service, driver service, matching service, location tracking (GPS), pricing service, payment service, notifications. Architecture: microservices, real-time location updates (WebSocket), geospatial database (PostGIS), surge pricing algorithm, route optimization, ETAs. Key aspects: matching algorithm (nearest drivers), real-time tracking with high frequency updates, handling peak demand, payment processing, driver/rider safety features, and global scalability.",
+        tips: ["Discuss geolocation and mapping services", "Explain matching algorithm", "Consider real-time tracking at scale", "Mention surge pricing mechanism"]
+      }
     ],
     devops: [
-      "Design a CI/CD pipeline for a microservices architecture.",
-      "Design a monitoring and alerting system for a distributed application."
+      {
+        question: "Design a CI/CD pipeline for a microservices architecture.",
+        answer: "Pipeline stages: source control trigger, automated build (Docker images), unit/integration tests, security scanning, artifact storage, deployment to staging, automated tests in staging, approval gates, production deployment (blue-green/canary). Tools: Jenkins/GitLab CI, Kubernetes for orchestration, Helm for packaging, ArgoCD for GitOps. Challenges: service dependencies, versioning, rollback strategies, environment parity, secrets management, and coordinating multi-service releases.",
+        tips: ["Describe each pipeline stage", "Mention tools and technologies", "Discuss deployment strategies", "Consider rollback and monitoring"]
+      },
+      {
+        question: "Design a monitoring and alerting system for a distributed application.",
+        answer: "Components: metrics collection (Prometheus), log aggregation (ELK/Loki), distributed tracing (Jaeger), visualization (Grafana), alerting (PagerDuty, Opsgenie). Collect: application metrics, infrastructure metrics, business metrics, error rates, latency. Architecture: agents on each service, time-series database, alert manager, dashboard. Key aspects: correlation IDs, SLIs/SLOs/SLAs, anomaly detection, alert fatigue prevention, on-call rotation, and incident response workflows.",
+        tips: ["Explain the three pillars of observability", "Discuss metrics to track", "Mention alerting strategies", "Consider reducing false positives"]
+      }
     ],
     data: [
-      "Design a recommendation system for an e-commerce platform.",
-      "Design a data pipeline for processing real-time analytics."
+      {
+        question: "Design a recommendation system for an e-commerce platform.",
+        answer: "Approaches: collaborative filtering (user-based, item-based), content-based filtering, hybrid models. Components: data collection layer, feature engineering, ML models (matrix factorization, deep learning), real-time serving layer, A/B testing framework. Architecture: data pipeline (batch/streaming), model training infrastructure, feature store, recommendation API, caching. Consider: cold start problem, diversity vs relevance, explainability, personalization, and handling sparse data.",
+        tips: ["Discuss different recommendation algorithms", "Explain offline vs online learning", "Mention cold start solutions", "Consider evaluation metrics"]
+      },
+      {
+        question: "Design a data pipeline for processing real-time analytics.",
+        answer: "Components: data ingestion (Kafka, Kinesis), stream processing (Flink, Spark Streaming), storage (data lake, data warehouse), analytics engine, visualization layer. Architecture: Lambda (batch + stream) or Kappa (stream only) architecture, event sourcing, CDC (Change Data Capture), data quality checks, schema evolution. Challenges: exactly-once processing, late-arriving data, windowing strategies, state management, backpressure handling, and maintaining data lineage.",
+        tips: ["Explain Lambda vs Kappa architecture", "Discuss stream processing frameworks", "Mention data consistency challenges", "Consider scalability and fault tolerance"]
+      }
     ]
   };
 
-  const baseQuestions = [
-    "Design a chat application with real-time messaging capabilities.",
-    "How would you design a rate limiting system for an API?"
+  const baseQuestions: QuestionWithAnswer[] = [
+    {
+      question: "Design a chat application with real-time messaging capabilities.",
+      answer: "Components: WebSocket server for bi-directional communication, message queue (Kafka/RabbitMQ), database (NoSQL for messages, SQL for users), media storage (S3), presence service, notification service. Architecture: horizontal scaling with session affinity, message persistence, delivery guarantees (at-least-once), read receipts, typing indicators. Consider: group chats, message history, search functionality, end-to-end encryption, offline support, and handling message ordering in distributed systems.",
+      tips: ["Discuss WebSocket scaling challenges", "Explain message delivery guarantees", "Consider presence and typing indicators", "Mention security and encryption"]
+    },
+    {
+      question: "How would you design a rate limiting system for an API?",
+      answer: "Algorithms: Token Bucket (smooth rate), Leaky Bucket (constant rate), Fixed Window (simple but bursty), Sliding Window Log (accurate but memory-intensive), Sliding Window Counter (balanced). Implementation: in-memory (Redis), middleware layer, per-user/IP/API key. Architecture: distributed rate limiting with Redis, graceful degradation, return 429 status, include rate limit headers. Consider: burst allowance, different tiers, bypass for internal services, and monitoring rate limit hits.",
+      tips: ["Compare different rate limiting algorithms", "Discuss distributed implementation", "Mention HTTP headers and status codes", "Consider different rate limit tiers"]
+    }
   ];
 
-  return (questionBank[roleType] || baseQuestions).slice(0, 2);
+  return [...(questionBank[roleType] || baseQuestions), ...baseQuestions].slice(0, 2);
 };
 
 // ============================================================================

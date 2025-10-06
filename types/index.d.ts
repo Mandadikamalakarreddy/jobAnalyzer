@@ -72,6 +72,12 @@ interface CodingQuestion {
   hints: string[];
 }
 
+interface QuestionWithAnswer {
+  question: string;
+  answer: string;
+  tips?: string[];
+}
+
 interface JobUploadData {
   jobTitle: string;
   jobDescription: string;
@@ -96,10 +102,10 @@ interface CompatibilityScore {
 }
 
 interface InterviewQuestions {
-  behavioral: string[];
-  technical: string[];
+  behavioral: string[] | QuestionWithAnswer[];
+  technical: string[] | QuestionWithAnswer[];
   coding: CodingQuestion[];
-  systemDesign: string[];
+  systemDesign: string[] | QuestionWithAnswer[];
 }
 
 interface JobAnalysis {

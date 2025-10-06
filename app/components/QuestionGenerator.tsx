@@ -9,6 +9,7 @@ interface QuestionGeneratorProps {
 export default function QuestionGenerator({ analysis, className }: QuestionGeneratorProps) {
   const [activeTab, setActiveTab] = useState<'behavioral' | 'technical' | 'coding' | 'systemDesign'>('behavioral');
   const [expandedCoding, setExpandedCoding] = useState<string | null>(null);
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<number>>(new Set());
 
   const { interviewQuestions } = analysis.analysis;
 
@@ -38,6 +39,22 @@ export default function QuestionGenerator({ analysis, className }: QuestionGener
 
   const toggleCodingExpansion = (questionId: string) => {
     setExpandedCoding(expandedCoding === questionId ? null : questionId);
+  };
+
+  const toggleQuestionExpansion = (index: number) => {
+    setExpandedQuestions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(index)) {
+        newSet.delete(index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+
+  const isQuestionWithAnswer = (item: any): item is QuestionWithAnswer => {
+    return typeof item === 'object' && 'question' in item && 'answer' in item;
   };
 
   return (
@@ -84,30 +101,80 @@ export default function QuestionGenerator({ analysis, className }: QuestionGener
                 <h3 className="text-lg font-semibold text-gray-100">Behavioral Questions</h3>
                 <p className="text-sm text-gray-300">- Focus on past experiences and soft skills</p>
               </div>
-              {interviewQuestions.behavioral.map((question, index) => (
-                <div key={index} className="bg-blue-500/20 border border-blue-400/30 rounded-lg p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-blue-500/30 text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
-                          Q{index + 1}
-                        </span>
-                        <span className="text-blue-300 text-xs">Behavioral</span>
+              {interviewQuestions.behavioral.map((item, index) => {
+                const isWithAnswer = isQuestionWithAnswer(item);
+                const question = isWithAnswer ? item.question : String(item);
+                const answer = isWithAnswer ? item.answer : null;
+                const tips = isWithAnswer ? item.tips : null;
+                
+                return (
+                  <div key={index} className="bg-blue-500/20 border border-blue-400/30 rounded-lg overflow-hidden">
+                    <div className="p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-blue-500/30 text-blue-200 px-2 py-1 rounded-full text-xs font-medium">
+                              Q{index + 1}
+                            </span>
+                            <span className="text-blue-300 text-xs">Behavioral</span>
+                          </div>
+                          <p className="text-gray-100 font-medium">{question}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(isWithAnswer ? `${question}\n\nAnswer: ${answer}` : question)}
+                          className="p-2 text-blue-300 hover:bg-blue-500/30 rounded-lg transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-gray-100 font-medium">{question}</p>
+                      
+                      {answer && (
+                        <button
+                          onClick={() => toggleQuestionExpansion(index)}
+                          className="w-full text-left p-3 bg-blue-500/30 hover:bg-blue-500/40 rounded-lg transition-colors flex items-center justify-between mt-3"
+                        >
+                          <span className="font-medium text-blue-200">
+                            {expandedQuestions.has(index) ? 'Hide' : 'Show'} Answer
+                          </span>
+                          <svg
+                            className={cn("w-5 h-5 text-blue-300 transition-transform", 
+                              expandedQuestions.has(index) ? 'rotate-180' : ''
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
-                    <button
-                      onClick={() => copyToClipboard(question)}
-                      className="p-2 text-blue-300 hover:bg-blue-500/30 rounded-lg transition-colors"
-                      title="Copy to clipboard"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
+
+                    {answer && expandedQuestions.has(index) && (
+                      <div className="border-t border-blue-400/30 bg-white/5 p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-blue-200 mb-2">Sample Answer</h5>
+                          <p className="text-gray-300 text-sm whitespace-pre-line">{answer}</p>
+                        </div>
+                        
+                        {tips && tips.length > 0 && (
+                          <div>
+                            <h5 className="font-semibold text-blue-200 mb-2">Tips</h5>
+                            <ul className="list-disc list-inside space-y-1">
+                              {tips.map((tip, tipIndex) => (
+                                <li key={tipIndex} className="text-gray-300 text-sm">{tip}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {interviewQuestions.behavioral.length === 0 && (
                 <p className="text-gray-400 italic text-center py-8">No behavioral questions generated</p>
               )}
@@ -122,30 +189,80 @@ export default function QuestionGenerator({ analysis, className }: QuestionGener
                 <h3 className="text-lg font-semibold text-gray-100">Technical Questions</h3>
                 <p className="text-sm text-gray-300">- Test domain knowledge and technical concepts</p>
               </div>
-              {interviewQuestions.technical.map((question, index) => (
-                <div key={index} className="bg-purple-500/20 border border-purple-400/30 rounded-lg p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-purple-500/30 text-purple-200 px-2 py-1 rounded-full text-xs font-medium">
-                          Q{index + 1}
-                        </span>
-                        <span className="text-purple-300 text-xs">Technical</span>
+              {interviewQuestions.technical.map((item, index) => {
+                const isWithAnswer = isQuestionWithAnswer(item);
+                const question = isWithAnswer ? item.question : String(item);
+                const answer = isWithAnswer ? item.answer : null;
+                const tips = isWithAnswer ? item.tips : null;
+                
+                return (
+                  <div key={index} className="bg-purple-500/20 border border-purple-400/30 rounded-lg overflow-hidden">
+                    <div className="p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-purple-500/30 text-purple-200 px-2 py-1 rounded-full text-xs font-medium">
+                              Q{index + 1}
+                            </span>
+                            <span className="text-purple-300 text-xs">Technical</span>
+                          </div>
+                          <p className="text-gray-100 font-medium">{question}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(isWithAnswer ? `${question}\n\nAnswer: ${answer}` : question)}
+                          className="p-2 text-purple-300 hover:bg-purple-500/30 rounded-lg transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-gray-100 font-medium">{question}</p>
+                      
+                      {answer && (
+                        <button
+                          onClick={() => toggleQuestionExpansion(1000 + index)}
+                          className="w-full text-left p-3 bg-purple-500/30 hover:bg-purple-500/40 rounded-lg transition-colors flex items-center justify-between mt-3"
+                        >
+                          <span className="font-medium text-purple-200">
+                            {expandedQuestions.has(1000 + index) ? 'Hide' : 'Show'} Answer
+                          </span>
+                          <svg
+                            className={cn("w-5 h-5 text-purple-300 transition-transform", 
+                              expandedQuestions.has(1000 + index) ? 'rotate-180' : ''
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
-                    <button
-                      onClick={() => copyToClipboard(question)}
-                      className="p-2 text-purple-300 hover:bg-purple-500/30 rounded-lg transition-colors"
-                      title="Copy to clipboard"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
+
+                    {answer && expandedQuestions.has(1000 + index) && (
+                      <div className="border-t border-purple-400/30 bg-white/5 p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-purple-200 mb-2">Answer</h5>
+                          <p className="text-gray-300 text-sm whitespace-pre-line">{answer}</p>
+                        </div>
+                        
+                        {tips && tips.length > 0 && (
+                          <div>
+                            <h5 className="font-semibold text-purple-200 mb-2">Tips</h5>
+                            <ul className="list-disc list-inside space-y-1">
+                              {tips.map((tip, tipIndex) => (
+                                <li key={tipIndex} className="text-gray-300 text-sm">{tip}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {interviewQuestions.technical.length === 0 && (
                 <p className="text-gray-400 italic text-center py-8">No technical questions generated</p>
               )}
@@ -284,30 +401,80 @@ export default function QuestionGenerator({ analysis, className }: QuestionGener
                 <h3 className="text-lg font-semibold text-gray-100">System Design Questions</h3>
                 <p className="text-sm text-gray-300">- Architecture and scalability discussions</p>
               </div>
-              {interviewQuestions.systemDesign.map((question, index) => (
-                <div key={index} className="bg-orange-500/20 border border-orange-400/30 rounded-lg p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="bg-orange-500/30 text-orange-200 px-2 py-1 rounded-full text-xs font-medium">
-                          Q{index + 1}
-                        </span>
-                        <span className="text-orange-300 text-xs">System Design</span>
+              {interviewQuestions.systemDesign.map((item, index) => {
+                const isWithAnswer = isQuestionWithAnswer(item);
+                const question = isWithAnswer ? item.question : String(item);
+                const answer = isWithAnswer ? item.answer : null;
+                const tips = isWithAnswer ? item.tips : null;
+                
+                return (
+                  <div key={index} className="bg-orange-500/20 border border-orange-400/30 rounded-lg overflow-hidden">
+                    <div className="p-4">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="bg-orange-500/30 text-orange-200 px-2 py-1 rounded-full text-xs font-medium">
+                              Q{index + 1}
+                            </span>
+                            <span className="text-orange-300 text-xs">System Design</span>
+                          </div>
+                          <p className="text-gray-100 font-medium">{question}</p>
+                        </div>
+                        <button
+                          onClick={() => copyToClipboard(isWithAnswer ? `${question}\n\nAnswer: ${answer}` : question)}
+                          className="p-2 text-orange-300 hover:bg-orange-500/30 rounded-lg transition-colors"
+                          title="Copy to clipboard"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </button>
                       </div>
-                      <p className="text-gray-100 font-medium">{question}</p>
+                      
+                      {answer && (
+                        <button
+                          onClick={() => toggleQuestionExpansion(2000 + index)}
+                          className="w-full text-left p-3 bg-orange-500/30 hover:bg-orange-500/40 rounded-lg transition-colors flex items-center justify-between mt-3"
+                        >
+                          <span className="font-medium text-orange-200">
+                            {expandedQuestions.has(2000 + index) ? 'Hide' : 'Show'} Answer
+                          </span>
+                          <svg
+                            className={cn("w-5 h-5 text-orange-300 transition-transform", 
+                              expandedQuestions.has(2000 + index) ? 'rotate-180' : ''
+                            )}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
-                    <button
-                      onClick={() => copyToClipboard(question)}
-                      className="p-2 text-orange-300 hover:bg-orange-500/30 rounded-lg transition-colors"
-                      title="Copy to clipboard"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                      </svg>
-                    </button>
+
+                    {answer && expandedQuestions.has(2000 + index) && (
+                      <div className="border-t border-orange-400/30 bg-white/5 p-4 space-y-4">
+                        <div>
+                          <h5 className="font-semibold text-orange-200 mb-2">Answer / Approach</h5>
+                          <p className="text-gray-300 text-sm whitespace-pre-line">{answer}</p>
+                        </div>
+                        
+                        {tips && tips.length > 0 && (
+                          <div>
+                            <h5 className="font-semibold text-orange-200 mb-2">Key Considerations</h5>
+                            <ul className="list-disc list-inside space-y-1">
+                              {tips.map((tip, tipIndex) => (
+                                <li key={tipIndex} className="text-gray-300 text-sm">{tip}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
               {interviewQuestions.systemDesign.length === 0 && (
                 <p className="text-gray-400 italic text-center py-8">No system design questions generated</p>
               )}
