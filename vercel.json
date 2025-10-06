@@ -1,5 +1,5 @@
 {
-  "name": "job-logic",
+  "name": "job-analyzer-d8cx",
   "buildCommand": "npm run build",
   "outputDirectory": "build/client",
   "installCommand": "npm install",
