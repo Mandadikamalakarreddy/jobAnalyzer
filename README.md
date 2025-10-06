@@ -55,8 +55,8 @@
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/Mandadikamalakarreddy/ai-resume-analyzer.git
-cd ai-resume-analyzer
+git clone https://github.com/Mandadikamalakarreddy/jobAnalyzer.git
+cd jobAnalyzer
 ```
 
 2. **Install dependencies**
@@ -196,8 +196,65 @@ docker build -t jobanalyzer .
 docker run -p 3000:3000 jobanalyzer
 ```
 
+
+##  Deploy to Vercel
+
+### One-Click Deploy
+
+The easiest way to deploy this application is using Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Mandadikamalakarreddy/jobAnalyzer)
+
+### Manual Deployment
+
+1. **Install Vercel CLI** (if not already installed)
+```bash
+npm install -g vercel
+```
+
+2. **Login to Vercel**
+```bash
+vercel login
+```
+
+3. **Deploy from your project directory**
+```bash
+vercel
+```
+
+4. **For production deployment**
+```bash
+vercel --prod
+```
+
+### Vercel Configuration
+
+The project includes a pre-configured `vercel.json` file with optimal settings:
+- **Build Command**: `npm run build`
+- **Output Directory**: `build/client`
+- **SPA Routing**: Configured to handle client-side routing
+- **Asset Caching**: Optimized cache headers for static assets
+
+### Environment Setup (Optional)
+
+If your application requires environment variables:
+
+1. In your Vercel dashboard, go to your project settings
+2. Navigate to "Environment Variables"
+3. Add any required variables (e.g., API keys)
+4. Redeploy the application
+
+### Post-Deployment
+
+After deployment:
+- Your app will be available at `https://your-project.vercel.app`
+- Automatic deployments on every push to main branch
+- Preview deployments for pull requests
+- Zero-config SSL/HTTPS
+
 ### Deployment Platforms
-The containerized application can be deployed to:
+
+The application can be deployed to:
 - **Vercel** - Optimal for React applications (recommended)
 - **Netlify** - JAMstack deployment platform
 - **AWS ECS** - Elastic Container Service
@@ -253,5 +310,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ for job seekers worldwide** | [Report Bug](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues) | [Request Feature](https://github.com/Mandadikamalakarreddy/ai-resume-analyzer/issues)#   j o b A n a l y z e r  
- 
+**Built with  for job seekers worldwide** | [Report Bug](https://github.com/Mandadikamalakarreddy/jobAnalyzer/issues) | [Request Feature](https://github.com/Mandadikamalakarreddy/jobAnalyzer/issues)

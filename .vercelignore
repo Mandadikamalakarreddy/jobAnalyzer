@@ -1,0 +1,48 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Development files
+.vscode
+.idea
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build files (will be rebuilt on Vercel)
+build/server
+.react-router
+.cache
+
+# Testing
+coverage
+.nyc_output
+
+# Environment variables (use Vercel dashboard)
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Git
+.git
+.gitignore
+
+# Documentation (optional - remove if you want to include)
+README.md
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Misc
+*.swp
+*.swo
+*~
